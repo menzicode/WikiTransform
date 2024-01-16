@@ -29,10 +29,10 @@ class WikiDumpReader:
 
     def __iter__(self) -> Iterator[WikiPage]:
         c = 0
-        for title, wiki_text, redirect in _extract_pages(self._dump_file):
+        for title, wiki_text, redirect, timestamp in _extract_pages(self._dump_file):
             c += 1
 
-            yield WikiPage(title, self._language, wiki_text, redirect)
+            yield WikiPage(title, self._language, wiki_text, redirect, timestamp)
 
             if c % 100000 == 0:
                 logger.info(f"Processed: {c} pages")
@@ -59,6 +59,13 @@ def _extract_pages(dump_file: str) -> Iterator[Tuple[str, str, str]]:
 
             text = elem.find(
                 f"./{namespace}revision/{namespace}text").text or ""
+
+            timestamp = elem.find(
+                f"./{namespace}revision/{namespace}timestamp").text or ""
+
+            upload = elem.find(
+                f"./{namespace}upload/{namespace}src").text or ""
+
             elem.clear()
 
-            yield title, text, redirect
+            yield title, text, redirect, timestamp

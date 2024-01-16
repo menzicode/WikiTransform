@@ -224,11 +224,12 @@ TEMPLATE_REGEXP = re.compile(r"{{\s*([^}\|]+?)\s*(?:\||})")
 
 @cython.cclass
 class WikiPage:
-    def __init__(self, title: str, language: str, wiki_text: str, redirect: Union[str, None]):
+    def __init__(self, title: str, language: str, wiki_text: str, redirect: Union[str, None], timestamp: str):
         self.title = title
         self.language = language
         self.wiki_text = wiki_text
         self.redirect = redirect
+        self.timestamp = timestamp
 
     @property
     def is_redirect(self) -> bool:
@@ -237,6 +238,10 @@ class WikiPage:
     @property
     def is_disambiguation(self) -> bool:
         return any(name.lower() in DISAMBIGUATION_TEMPLATE_NAMES for name in TEMPLATE_REGEXP.findall(self.wiki_text))
+
+    @property
+    def timestamp(self) -> str:
+        return self.timestamp
 
     def __repr__(self):
         return f"<WikiPage {self.title}>"
