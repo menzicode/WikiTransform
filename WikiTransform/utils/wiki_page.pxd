@@ -3,4 +3,3 @@ cdef class WikiPage:
     cdef readonly str language
     cdef readonly str wiki_text
     cdef readonly str redirect
-    cdef readonly str timestamp
