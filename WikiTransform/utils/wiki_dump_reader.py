@@ -63,9 +63,6 @@ def _extract_pages(dump_file: str) -> Iterator[Tuple[str, str, str]]:
             timestamp = elem.find(
                 f"./{namespace}revision/{namespace}timestamp").text or ""
 
-            upload = elem.find(
-                f"./{namespace}upload/{namespace}src").text or ""
-
             elem.clear()
 
             yield title, text, redirect, timestamp
