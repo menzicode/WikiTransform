@@ -142,6 +142,15 @@ class DumpDB:
 
         return self._deserialize_paragraphs(value)
 
+    def get_wikilinks(self, key: str) -> List[str]:
+        paragraphs = self.get_paragraphs(key)
+        titles = []
+        for paragraph in paragraphs:
+            for wikilink in paragraph.wiki_links:
+                titles.append(wikilink.title)
+
+        return titles
+
     def get_mutipage_paragraphs(self, keys: List[str]) -> List[List[Paragraph]]:
         with self._env.begin(db=self._page_db) as txn:
             values = txn.cursor().getmulti(
