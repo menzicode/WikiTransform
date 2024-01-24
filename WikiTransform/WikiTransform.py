@@ -56,6 +56,13 @@ class WikiTransform:
 
         return mean_pool
 
+    def encode_sentence(self, sentence: str, add_prompt: bool = True):
+        if add_prompt:
+            sentence = "Represent this sentence for searching relevant passages: " + sentence
+        embedding = self.model.encode(sentence)
+        embedding = embedding.reshape(1, -1)
+        return embedding
+
     def train(self, batch_size: int = 100000, path: str = os.getcwd()):
         ctr = 0
         vecs = []
